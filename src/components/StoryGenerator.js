@@ -91,7 +91,6 @@ const StoryGenerator = () => {
             <option value="Romance">Romance</option>
             <option value="History">History</option>
 
-            {/* Add more genres as needed */}
           </select>
         </div>
         <div>

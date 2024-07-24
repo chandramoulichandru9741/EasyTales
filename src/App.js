@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import StoryGenerator from './components/StoryGenerator';
 function App() {
