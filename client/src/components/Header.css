@@ -1,0 +1,50 @@
+.hero {
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat; 
+    z-index: 1; /* Background image */
+    opacity: 0.9;
+    position: relative;
+}
+
+.navbar-brand {
+    font-size: 1.5rem; 
+    padding-right: 5rem; 
+    font-family: "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Navbar base style */
+.navbar-custom {
+    background: transparent; /* Default transparent background */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for background and shadow */
+}
+
+/* Navbar style when scrolled */
+.navbar-custom.scrolled {
+    background: rgba(244, 241, 241, 0.9); /* Slightly transparent white background */
+    padding: 1rem 1rem; /* Padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1); /* Shadow effect */
+}
+
+/* Ensure text color changes for nav links */
+.navbar-custom.scrolled .nav-link {
+    color: black !important; /* Text color for links */
+}
+
+/* Ensure text color for the brand */
+.navbar-custom.scrolled .navbar-brand h1 {
+    color: black !important; /* Text color for brand text */
+}
+
+/* Optional: ensure text color for active and hover states */
+.navbar-custom.scrolled .nav-link.active,
+.navbar-custom.scrolled .nav-link:hover {
+    color: black !important;
+}
+
+/* Ensure text color for dropdown items if any */
+.navbar-custom.scrolled .dropdown-menu .dropdown-item {
+    color: black !important;
+}

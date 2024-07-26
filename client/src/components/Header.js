@@ -1,8 +1,11 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import './Header.css'; // Ensure this CSS file is present
 
 const Header = () => {
+    const [scrolling, setScrolling] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const token = localStorage.getItem('token');
 
     const handleLogout = () => {
@@ -10,10 +13,28 @@ const Header = () => {
         navigate('/login');
     };
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50) { // Adjust the scroll threshold as needed
+                setScrolling(true);
+            } else {
+                setScrolling(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <NavLink className="navbar-brand" to="/">My Stories</NavLink>
+            {location.pathname !== '/stories' && (
+                <div className="hero" style={{ backgroundImage: "url('/background.jpg')" }}></div>
+            )}
+
+            <nav className={`navbar navbar-expand-lg navbar-dark navbar-custom fixed-top ${scrolling ? 'scrolled' : ''}`}>
+                <NavLink className="navbar-brand" to="/"><h1>EasyTales</h1></NavLink>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -24,7 +45,7 @@ const Header = () => {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav mr-auto">
+                    <ul className="navbar-nav ml-auto p-3">
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/" end>
                                 Home
@@ -35,22 +56,21 @@ const Header = () => {
                                My Stories
                             </NavLink>
                         </li>
-                        
                         {!token ? (
                             <>
-                                <li className="nav-item my-lg-0">
+                                <li className="nav-item">
                                     <NavLink className="nav-link" to="/register">
                                         Register
                                     </NavLink>
                                 </li>
-                                <li className="nav-item my-lg-0">
+                                <li className="nav-item">
                                     <NavLink className="nav-link" to="/login">
                                         Login
                                     </NavLink>
                                 </li>
                             </>
                         ) : (
-                            <li className="nav-item my-lg-0">
+                            <li className="nav-item">
                                 <button className="nav-link btn btn-link" onClick={handleLogout}>
                                     Logout
                                 </button>

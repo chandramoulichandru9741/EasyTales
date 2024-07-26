@@ -169,7 +169,6 @@ const StoryGenerator = () => {
 
   return (
     <div>
-      <h1>Story Generator</h1>
       <StoryForm onSubmit={handleSubmit} loading={loading} />
       {story && <GeneratedStory story={story} />}
       {error && (
@@ -177,17 +176,20 @@ const StoryGenerator = () => {
           <h2>{error}</h2>
         </div>
       )}
-      <div>
-        <label>Genre:</label>
-        <select value={genre} onChange={handleGenreChange}>
-          <option value="">All</option>
-          <option value="Fantasy">Fantasy</option>
-          <option value="Science Fiction">Science Fiction</option>
-          <option value="Mystery">Mystery</option>
-          <option value="Romance">Romance</option>
-          <option value="History">History</option>
-        </select>
-      </div>
+     <div class="container mt-4">
+  <div class="form-group">
+    <label for="genreSelect">Genre:</label>
+    <select id="genreSelect" class="form-control" value={genre} onChange={handleGenreChange}>
+      <option value="">All</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="Science Fiction">Science Fiction</option>
+      <option value="Mystery">Mystery</option>
+      <option value="Romance">Romance</option>
+      <option value="History">History</option>
+    </select>
+  </div>
+</div>
+
       <StoryList stories={publicStories} onLike={handleLike} onComment={handleComment} likedStories={likedStories} />
     </div>
   );

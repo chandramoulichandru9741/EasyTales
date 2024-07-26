@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './MyStories.css'; // Ensure this CSS file is imported
 
 const MyStories = () => {
     const [stories, setStories] = useState([]);
@@ -32,17 +33,19 @@ const MyStories = () => {
     }, [token, navigate]);
 
     return (
-        <div>
-            <h1>My Stories</h1>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <ul>
-                {stories.map((story) => (
-                    <li key={story.id}>
-                        <h3>{story.genre}</h3>
-                        <p>{story.story}</p>
-                    </li>
-                ))}
-            </ul>
+        <div className="background-image">
+            <div className="container py-4">
+                <h1 className="text-center mb-4">My Stories</h1>
+                {error && <div className="alert alert-danger">{error}</div>}
+                <ul className="list-group">
+                    {stories.map((story) => (
+                        <li key={story.id} className="list-group-item mb-3 story-item">
+                            <h3>{story.genre}</h3>
+                            <p>{story.story}</p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

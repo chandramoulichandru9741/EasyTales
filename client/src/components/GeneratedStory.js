@@ -1,11 +1,12 @@
-// GeneratedStory.js
 import React from 'react';
 
 const GeneratedStory = ({ story }) => {
   return (
-    <div>
-      <h2>Generated Story:</h2>
-      <p>{story}</p>
+    <div className="container mt-4">
+      <div className="card p-4">
+        <h2 className="text-center mb-4">Generated Story</h2>
+        <p>{story}</p>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,33 @@
+/* StoryForm.css */
+.story-form-wrapper {
+    width: 50%;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    z-index: 2; /* Higher than background image */
+    position: absolute; /* Positioning relative to the nearest positioned ancestor */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+    padding: 2rem; /* Adjust padding as needed */
+}
+
+.story-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.story-form label {
+    font-weight: bold;
+}
+
+.story-form .form-control {
+    border-radius: 0.25rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.story-form .btn {
+    font-size: 1.25rem;
+    padding: 0.75rem;
+}

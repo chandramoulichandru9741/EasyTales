@@ -1,0 +1,14 @@
+.login-form-wrapper {
+    width: 100%;
+    max-width: 500px; /* Adjust the max-width as needed */
+    margin: 0 auto;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    z-index: 2; /* Ensure it appears above the background image */
+    position: absolute; /* Positioning relative to .hero */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+}

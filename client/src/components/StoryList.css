@@ -1,0 +1,40 @@
+.story-card {
+    background: #fff; /* White background for the card */
+    text-align: justify;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for the card */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 0.5rem; /* Rounded corners */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.story-card:hover {
+    transform: scale(1.05); /* Increase size slightly on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+.comments {
+    border-top: 1px solid #ddd; /* Divider for comments */
+    padding-top: 1rem; /* Spacing */
+}
+
+.story-card h3 {
+    font-size: 1.25rem; /* Font size for story title */
+}
+
+.story-card p {
+    font-size: 1rem; /* Font size for story content */
+}
+
+.btn {
+    font-size: 0.875rem; /* Font size for buttons */
+}
+
+@media (max-width: 768px) {
+    .story-card {
+        padding: 1rem; /* Padding for smaller screens */
+    }
+
+    .story-card h3 {
+        font-size: 1.125rem; /* Adjust title font size for smaller screens */
+    }
+}

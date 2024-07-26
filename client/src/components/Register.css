@@ -1,0 +1,48 @@
+/* Ensure container and card are styled correctly */
+.register-form-wrapper {
+    width: 100%;
+    
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    z-index: 2; /* Ensure it appears above the background image */
+    position: absolute; /* Absolute positioning to center it */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+}
+
+/* Ensure card is styled properly */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    padding: 2rem; /* Adjust padding as needed */
+}
+
+/* Styling for buttons */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border: none;
+}
+
+/* Center text for message */
+.text-center {
+    text-align: center;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 576px) {
+  .register-form-wrapper {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+}
