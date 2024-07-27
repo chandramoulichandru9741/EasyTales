@@ -3,6 +3,7 @@ import axios from 'axios';
 import StoryForm from './StoryForm';
 import StoryList from './StoryList';
 import GeneratedStory from './GeneratedStory';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const StoryGenerator = () => {
   const [story, setStory] = useState('');
@@ -11,6 +12,9 @@ const StoryGenerator = () => {
   const [publicStories, setPublicStories] = useState([]);
   const [likedStories, setLikedStories] = useState(new Set());
   const [genre, setGenre] = useState('');
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
   useEffect(() => {
     fetchPublicStories();
@@ -26,15 +30,25 @@ const StoryGenerator = () => {
     };
   }, []);
 
-  const fetchPublicStories = async (selectedGenre = '') => {
-    let url = 'http://localhost:5000/stories';
+  const fetchPublicStories = async (selectedGenre = '', page = 1) => {
+    let url = `http://localhost:5000/stories?page=${page}&limit=${limit}`;
     if (selectedGenre) {
-      url += `?genre=${selectedGenre}`;
+      url += `&genre=${selectedGenre}`;
     }
 
     try {
       const response = await axios.get(url);
-      setPublicStories(response.data);
+      const newStories = response.data;
+
+      if (newStories.length < limit) {
+        setHasMore(false);
+      }
+
+      setPublicStories((prevStories) => {
+        // Create a new Set with current and new stories to avoid duplicates
+        const updatedStories = new Set([...prevStories, ...newStories]);
+        return Array.from(updatedStories);
+      });
     } catch (error) {
       console.error('Error fetching stories:', error);
       setError('Error fetching stories. Please try again.');
@@ -44,7 +58,10 @@ const StoryGenerator = () => {
   const handleGenreChange = async (e) => {
     const selectedGenre = e.target.value;
     setGenre(selectedGenre);
-    fetchPublicStories(selectedGenre);
+    setPage(1);
+    setHasMore(true);
+    setPublicStories([]); // Clear the current stories
+    fetchPublicStories(selectedGenre, 1);
   };
 
   const handleSubmit = async ({ genre, characters, specificDetails }) => {
@@ -94,6 +111,8 @@ const StoryGenerator = () => {
         });
 
         // Fetch updated stories after posting new one
+        setPage(1);
+        setHasMore(true);
         fetchPublicStories();
       } else {
         throw new Error('Invalid response from AI21 API');
@@ -167,6 +186,14 @@ const StoryGenerator = () => {
     }
   };
 
+  const fetchMoreData = () => {
+    setPage((prevPage) => {
+      const newPage = prevPage + 1;
+      fetchPublicStories(genre, newPage);
+      return newPage;
+    });
+  };
+
   return (
     <div>
       <StoryForm onSubmit={handleSubmit} loading={loading} />
@@ -176,21 +203,32 @@ const StoryGenerator = () => {
           <h2>{error}</h2>
         </div>
       )}
-     <div class="container mt-4">
-  <div class="form-group">
-    <label for="genreSelect">Genre:</label>
-    <select id="genreSelect" class="form-control" value={genre} onChange={handleGenreChange}>
-      <option value="">All</option>
-      <option value="Fantasy">Fantasy</option>
-      <option value="Science Fiction">Science Fiction</option>
-      <option value="Mystery">Mystery</option>
-      <option value="Romance">Romance</option>
-      <option value="History">History</option>
-    </select>
-  </div>
-</div>
-
-      <StoryList stories={publicStories} onLike={handleLike} onComment={handleComment} likedStories={likedStories} />
+      <div className="container mt-4">
+        <div className="form-group">
+          <label htmlFor="genreSelect">Genre:</label>
+          <select id="genreSelect" className="form-control" value={genre} onChange={handleGenreChange}>
+            <option value="">All</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="History">History</option>
+          </select>
+        </div>
+      </div>
+      <InfiniteScroll
+        dataLength={publicStories.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <StoryList stories={publicStories} onLike={handleLike} onComment={handleComment} likedStories={likedStories} />
+      </InfiniteScroll>
     </div>
   );
 };

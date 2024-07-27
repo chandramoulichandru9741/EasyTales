@@ -4,7 +4,7 @@
     
     margin: 0 auto;
     border-radius: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     z-index: 2; /* Ensure it appears above the background image */
     position: absolute; /* Absolute positioning to center it */
     top: 50%; /* Center vertically */
@@ -15,7 +15,7 @@
 /* Ensure card is styled properly */
 .card {
     border-radius: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
     padding: 2rem; /* Adjust padding as needed */
 }

@@ -37,14 +37,14 @@ const StoryList = ({ stories, onLike, onComment, likedStories }) => {
                   onClick={() => onLike(story.id)}
                   disabled={likedStories.has(story.id)}
                 >
-                  {likedStories.has(story.id) ? 'Liked' : 'Like'}
+                  <i className={`fas fa-thumbs-up ${likedStories.has(story.id) ? 'liked' : ''}`}></i>
                 </button>
                 <span>{story.likes}</span>
                 <button
                   className="btn btn-secondary d-block mt-2"
                   onClick={() => toggleComments(story.id)}
                 >
-                  {showComments[story.id] ? 'Hide Comments' : 'View Comments'}
+                  <i className="fas fa-comments"></i>
                 </button>
                 {showComments[story.id] && comments[story.id] && (
                   <div className="comments mt-2">
