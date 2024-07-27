@@ -41,7 +41,7 @@ const StoryForm = ({ onSubmit, loading }) => {
               className="form-control"
               value={characters}
               onChange={(e) => setCharacters(e.target.value)}
-              placeholder="Enter characters"
+              placeholder="Enter characters like 'chandra, anvesh chandra's friend'"
               required
             />
           </div>
@@ -53,7 +53,7 @@ const StoryForm = ({ onSubmit, loading }) => {
               className="form-control"
               value={specificDetails}
               onChange={(e) => setSpecificDetails(e.target.value)}
-              placeholder="Enter specific details"
+              placeholder="Enter specific details like 'After college'"
               required
             />
           </div>

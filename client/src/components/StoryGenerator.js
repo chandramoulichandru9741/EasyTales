@@ -3,7 +3,7 @@ import axios from 'axios';
 import StoryForm from './StoryForm';
 import StoryList from './StoryList';
 import GeneratedStory from './GeneratedStory';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller'; // Import the InfiniteScroll component
 
 const StoryGenerator = () => {
   const [story, setStory] = useState('');
@@ -12,8 +12,8 @@ const StoryGenerator = () => {
   const [publicStories, setPublicStories] = useState([]);
   const [likedStories, setLikedStories] = useState(new Set());
   const [genre, setGenre] = useState('');
-  const [hasMore, setHasMore] = useState(true);
-  const limit = 10;
+  const [hasMoreStories, setHasMoreStories] = useState(true); // State to track if there are more stories to fetch
+  const [isFetching, setIsFetching] = useState(false); // Flag to prevent multiple simultaneous fetches
 
   useEffect(() => {
     fetchPublicStories();
@@ -27,39 +27,37 @@ const StoryGenerator = () => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
+  }, []); // Only run on component mount
 
-  const fetchPublicStories = async (selectedGenre = '') => {
-    let url = `http://localhost:5000/stories?limit=${limit}`;
+  const fetchPublicStories = async (page = 1, selectedGenre = genre) => {
+    if (isFetching) return; // Prevent multiple simultaneous fetches
+    setIsFetching(true); // Set fetching flag
+
+    let url = `http://localhost:5000/stories?page=${page}`;
     if (selectedGenre) {
       url += `&genre=${selectedGenre}`;
     }
 
     try {
       const response = await axios.get(url);
-      const newStories = response.data;
+      const stories = response.data;
 
-      if (newStories.length < limit) {
-        setHasMore(false);
-      }
-
-      setPublicStories((prevStories) => {
-        // Create a new Set with current and new stories to avoid duplicates
-        const updatedStories = new Set([...prevStories, ...newStories]);
-        return Array.from(updatedStories);
-      });
+      setPublicStories((prevStories) => [...prevStories, ...stories]); // Append new stories to existing ones
+      setHasMoreStories(stories.length === 10); // Check if there are more stories based on page size (assuming 10 per page)
     } catch (error) {
       console.error('Error fetching stories:', error);
       setError('Error fetching stories. Please try again.');
+    } finally {
+      setIsFetching(false); // Reset fetching flag
     }
   };
 
-  const handleGenreChange = async (e) => {
+  const handleGenreChange = (e) => {
     const selectedGenre = e.target.value;
     setGenre(selectedGenre);
-    setHasMore(true);
+    setHasMoreStories(true); // Reset hasMore flag
     setPublicStories([]); // Clear the current stories
-    fetchPublicStories(selectedGenre);
+    fetchPublicStories(1, selectedGenre); // Fetch stories for the new genre
   };
 
   const handleSubmit = async ({ genre, characters, specificDetails }) => {
@@ -109,12 +107,10 @@ const StoryGenerator = () => {
         });
 
         // Fetch updated stories after posting new one
-        setHasMore(true);
-        fetchPublicStories();
+        fetchPublicStories(1, genre);
       } else {
         throw new Error('Invalid response from AI21 API');
       }
-
     } catch (error) {
       console.error('Error generating story:', error);
       setError('Error generating story. Please try again.');
@@ -147,12 +143,11 @@ const StoryGenerator = () => {
         }
       });
 
-      // Add story ID to likedStories and update state to disable the button
       setLikedStories((prev) => new Set(prev).add(storyId));
     } catch (error) {
       console.error('Error liking story:', error);
       if (error.response && error.response.data && error.response.data.error) {
-        alert(error.response.data.error); // Displaying backend error message
+        alert(error.response.data.error);
       } else {
         alert('Error liking story. Please try again.');
       }
@@ -183,6 +178,8 @@ const StoryGenerator = () => {
     }
   };
 
+  const loader = <div className="loader">Loading...</div>; // Create a loader component for visual feedback
+
   return (
     <div>
       <StoryForm onSubmit={handleSubmit} loading={loading} />
@@ -206,15 +203,10 @@ const StoryGenerator = () => {
         </div>
       </div>
       <InfiniteScroll
-        dataLength={publicStories.length}
-        next={fetchPublicStories}
-        hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
+        pageStart={1}
+        loadMore={() => fetchPublicStories(publicStories.length / 10 + 1)} // Calculate next page based on current stories length
+        hasMore={hasMoreStories}
+        loader={loader} // Use the loader component for visual feedback
       >
         <StoryList stories={publicStories} onLike={handleLike} onComment={handleComment} likedStories={likedStories} />
       </InfiniteScroll>
