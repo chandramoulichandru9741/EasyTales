@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import StoryGenerator from './components/StoryGenerator';
 import Register from './components/Register';
 import Login from './components/Login';

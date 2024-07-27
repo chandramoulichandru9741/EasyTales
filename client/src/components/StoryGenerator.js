@@ -13,7 +13,6 @@ const StoryGenerator = () => {
   const [likedStories, setLikedStories] = useState(new Set());
   const [genre, setGenre] = useState('');
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
   const limit = 10;
 
   useEffect(() => {
@@ -30,8 +29,8 @@ const StoryGenerator = () => {
     };
   }, []);
 
-  const fetchPublicStories = async (selectedGenre = '', page = 1) => {
-    let url = `http://localhost:5000/stories?page=${page}&limit=${limit}`;
+  const fetchPublicStories = async (selectedGenre = '') => {
+    let url = `http://localhost:5000/stories?limit=${limit}`;
     if (selectedGenre) {
       url += `&genre=${selectedGenre}`;
     }
@@ -58,10 +57,9 @@ const StoryGenerator = () => {
   const handleGenreChange = async (e) => {
     const selectedGenre = e.target.value;
     setGenre(selectedGenre);
-    setPage(1);
     setHasMore(true);
     setPublicStories([]); // Clear the current stories
-    fetchPublicStories(selectedGenre, 1);
+    fetchPublicStories(selectedGenre);
   };
 
   const handleSubmit = async ({ genre, characters, specificDetails }) => {
@@ -111,7 +109,6 @@ const StoryGenerator = () => {
         });
 
         // Fetch updated stories after posting new one
-        setPage(1);
         setHasMore(true);
         fetchPublicStories();
       } else {
@@ -186,14 +183,6 @@ const StoryGenerator = () => {
     }
   };
 
-  const fetchMoreData = () => {
-    setPage((prevPage) => {
-      const newPage = prevPage + 1;
-      fetchPublicStories(genre, newPage);
-      return newPage;
-    });
-  };
-
   return (
     <div>
       <StoryForm onSubmit={handleSubmit} loading={loading} />
@@ -218,7 +207,7 @@ const StoryGenerator = () => {
       </div>
       <InfiniteScroll
         dataLength={publicStories.length}
-        next={fetchMoreData}
+        next={fetchPublicStories}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
         endMessage={
